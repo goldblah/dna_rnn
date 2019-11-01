@@ -57,6 +57,6 @@ def dataFrameGenerator(fasta_file_1000, fasta_file_750, fasta_file_500, output_l
     file_name = output_loc + organism_finder.match(fasta_file_1000).group(1) + '_genes.csv'
     test_df.to_csv(path_or_buf=file_name)
 
-dataFrameGenerator('/Users/homeworkdude/Aedes_albopictus_output.fasta',
+#dataFrameGenerator('/Users/homeworkdude/Aedes_albopictus_output.fasta',
                    '/Users/homeworkdude/Aedes_albopictus_output_750.fasta',
                    '/Users/homeworkdude/Aedes_albopictus_output_500.fasta')

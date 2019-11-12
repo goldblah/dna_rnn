@@ -1,3 +1,5 @@
+import sys
+    
 def dataFrameGenerator(fasta_file_1000, fasta_file_750, fasta_file_500, output_loc = ''):
     #imports
     import Bio
@@ -54,9 +56,13 @@ def dataFrameGenerator(fasta_file_1000, fasta_file_750, fasta_file_500, output_l
         'Gene Sequence': gene_seq
     })
 
-    file_name = output_loc + organism_finder.match(fasta_file_1000).group(1) + '_genes.csv'
+    file_name = output_loc + '/' + organism_finder.match(fasta_file_1000).group(1) + '_genes.csv'
     test_df.to_csv(path_or_buf=file_name)
 
-# dataFrameGenerator('/Users/homeworkdude/Aedes_albopictus_output.fasta',
-#                    '/Users/homeworkdude/Aedes_albopictus_output_750.fasta',
-#                    '/Users/homeworkdude/Aedes_albopictus_output_500.fasta')
+def main(argv):
+    for i,arg in enumerate(argv):
+        print(i, arg)
+    dataFrameGenerator(argv[0],argv[1],argv[2],argv[3])
+
+if __name__ == '__main__':
+    main(sys.argv[1:])

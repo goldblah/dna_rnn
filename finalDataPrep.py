@@ -4,7 +4,7 @@ import sys
 def finalDataPrep(csv_list):
     import pandas as pd
     import re
-    name_grabber = re.compile(r'(.+)_genes.csv')
+    name_grabber = re.compile(r'(.+)_(genes|lncRNA).csv')
     df_list_1000 = []
     df_list_750 = []
     df_list_500 = []
@@ -12,11 +12,16 @@ def finalDataPrep(csv_list):
     for csv in csv_list:
         temp = pd.read_csv(csv, index_col = 0)
         temp['Organism Name'] = ' '.join(name_grabber.match(csv).group(1).split('_'))
-
+        if 'genes' in csv:
+            type = 'gene'
+        else:
+            type = 'lncRNA'
         csv1000 = temp[temp['Sequence Length'] == 1000].drop('Sequence Length', axis = 1)
+        csv1000['Type'] = type 
         csv750 = temp[temp['Sequence Length'] == 750].drop('Sequence Length', axis = 1)
+        csv750['Type'] = type
         csv500 = temp[temp['Sequence Length'] == 500].drop('Sequence Length', axis = 1)
-
+        csv500['Type'] = type
         df_list_1000.append(csv1000)
         df_list_750.append(csv750)
         df_list_500.append(csv500)
@@ -25,7 +30,9 @@ def finalDataPrep(csv_list):
         'Gene Name': [],
         'Gene Location': [],
         'Gene Sequence': [],
-        'Organism Name': []
+        'Organism Name': [],
+        'One Hot': [],
+        'Type': []
         })
 
     for csv in df_list_1000:
@@ -35,7 +42,9 @@ def finalDataPrep(csv_list):
         'Gene Name': [],
         'Gene Location': [],
         'Gene Sequence': [],
-        'Organism Name': []
+        'Organism Name': [],
+        'One Hot': [],
+        'Type': []
         })
 
     for csv in df_list_750:
@@ -45,7 +54,9 @@ def finalDataPrep(csv_list):
         'Gene Name': [],
         'Gene Location': [],
         'Gene Sequence': [],
-        'Organism Name': []
+        'Organism Name': [],
+        'One Hot': [],
+        'Type': []
         })
 
     for csv in df_list_500:

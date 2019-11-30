@@ -10,18 +10,27 @@ def finalDataPrep(csv_list):
     df_list_500 = []
     
     for csv in csv_list:
-        temp = pd.read_csv(csv, index_col = 0)
+        mylist = []
+
+        for chunk in pd.read_csv(csv, index_col = 0, chunksize=20000):
+            mylist.append(chunk)
+
+        temp = pd.concat(mylist, axis= 0)
+        del mylist
         temp['Organism Name'] = ' '.join(name_grabber.match(csv).group(1).split('_'))
+
         if 'genes' in csv:
             type = 'gene'
         else:
             type = 'lncRNA'
+
         csv1000 = temp[temp['Sequence Length'] == 1000].drop('Sequence Length', axis = 1)
         csv1000['Type'] = type 
         csv750 = temp[temp['Sequence Length'] == 750].drop('Sequence Length', axis = 1)
         csv750['Type'] = type
         csv500 = temp[temp['Sequence Length'] == 500].drop('Sequence Length', axis = 1)
         csv500['Type'] = type
+
         df_list_1000.append(csv1000)
         df_list_750.append(csv750)
         df_list_500.append(csv500)
